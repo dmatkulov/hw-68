@@ -4,7 +4,6 @@ function App() {
   return (
     <>
       <div>
-        App will be here
         <Todos/>
       </div>
     </>

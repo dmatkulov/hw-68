@@ -1,6 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import axiosApi from "../../axiosApi";
-import {Todos} from "../../types";
+import {TodoApi, Todos} from "../../types";
+import {RootState} from "../../app/store";
 
 export const fetchTodos = createAsyncThunk(
   'todo/fetch',
@@ -20,6 +21,21 @@ export const fetchTodos = createAsyncThunk(
       });
       return [...newTodos];
     }
-    
   }
+);
+
+// export const changeStatus = createAsyncThunk<void, TodoApi, {state: RootState}>(
+//   'todo/checkStatus',
+//   async (_, thunkAPI) => {
+//     const currentTodo = thunkAPI.getState().todos.todo;
+//
+//     await axiosApi.put('/todos.json', changedTodo);
+//   }
+// );
+
+export const onSubmit = createAsyncThunk<void, TodoApi, {state: RootState}>(
+  'todo/addTodo',
+  async (newTodo) => {
+    await axiosApi.post('/todos.json', newTodo);
+}
 );
