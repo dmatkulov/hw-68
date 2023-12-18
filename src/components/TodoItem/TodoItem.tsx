@@ -1,34 +1,52 @@
 import React from 'react';
-// import {useDispatch} from "react-redux";
-// import {changeStatus, fetchTodos} from "../../containers/Todos/todoThunks";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../app/store";
+import {Todo} from "../../types";
+import {fetchTodos, changeStatus, deleteTodo} from "../../containers/Todos/todoThunks";
 
 interface Props {
-  title: string;
-  status: boolean;
+  todo: Todo;
 }
-const TodoItem: React.FC<Props> = ({title, status = false}) => {
-  // const dispatch = useDispatch();
-  // const checkStatus = async (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newStatus = !status;
-  //   await dispatch(changeStatus());
-  //   await dispatch(fetchTodos());
-  //   console.log('status', event.target.value);
-  // };
+
+const TodoItem: React.FC<Props> = ({todo}) => {
+  const dispatch: AppDispatch = useDispatch();
+  const handleStatusChange = async () => {
+    await dispatch(changeStatus(todo.id));
+    await dispatch(fetchTodos());
+  };
+  
+  const handleDelete = async () => {
+    await dispatch(deleteTodo(todo.id));
+    await dispatch(fetchTodos());
+  };
   
   return (
-      <div className="card mb-3 p-3">
-        <h5 className="card-title">
-          {title}
-        </h5>
+    <div className="card mb-3 p-3">
+      <h5 className="card-title pb-3 border-bottom mb-3">
+        {todo.title}
+      </h5>
+      <div className="d-flex justify-content-between align-items-center">
         <div>
           <input
             type="checkbox"
-            checked={status}
-            // onChange={checkStatus}
+            className="me-3"
+            checked={todo.status}
+            onChange={handleStatusChange}
           />
-          Status
+          {todo.status ? (
+            <span className="badge text-bg-success">Completed</span>
+          ) : (
+            <span className="badge text-bg-secondary">Ongoing</span>
+          )}
         </div>
+        <button
+          className="btn btn-danger"
+          onClick={handleDelete}
+        >
+          Delete
+        </button>
       </div>
+    </div>
   );
 };
 

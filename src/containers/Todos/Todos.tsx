@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import TodoItem from "../../components/TodoItem/TodoItem";
-import TodoForm from "../../components/TodoForm/TodoForm";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../app/store";
 import {fetchTodos} from "./todoThunks";
@@ -16,23 +15,15 @@ const Todos: React.FC = () => {
   }, [dispatch]);
   
   return (
-    <div className="container-md mx-auto">
-      <div className="row">
-        <div className="col-6">
-          {isLoading && <Spinner/>}
-          {todos.map((todo) => (
-            <TodoItem
-              key={todo.id}
-              title={todo.title}
-              status={todo.status}
-            />
-          ))}
-        </div>
-        <div className="col-6">
-          <TodoForm/>
-        </div>
-      </div>
-    </div>
+    <>
+      {isLoading && <Spinner/>}
+      {todos.map((todo) => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+        />
+      ))}
+    </>
   );
 };
 

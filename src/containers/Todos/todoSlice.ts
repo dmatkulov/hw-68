@@ -1,17 +1,23 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {Todo} from "../../types";
-import {fetchTodos} from "./todoThunks";
+import {addNewTodos, fetchTodos} from "./todoThunks";
 
 interface TodoState {
   todo: Todo[];
   isLoading: boolean;
   isError: boolean;
+  isCreating: boolean
 }
 
 const initialState: TodoState = {
-  todo: [],
+  todo: [{
+    id: '',
+    title: '',
+    status: false
+  }],
   isLoading: false,
-  isError: false
+  isError: false,
+  isCreating: false
 };
 
 export const todoSlice = createSlice({
@@ -31,9 +37,21 @@ export const todoSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
     });
+    
+    builder.addCase(addNewTodos.pending, (state) => {
+      state.isCreating = true;
+      state.isError = false;
+    });
+    builder.addCase(addNewTodos.fulfilled, (state) => {
+      state.isCreating = false;
+      state.isError = false;
+    });
+    builder.addCase(addNewTodos.rejected, (state) => {
+      state.isCreating = false;
+      state.isError = true;
+    });
   }
 });
 
 export const todoReducer = todoSlice.reducer;
-
 
