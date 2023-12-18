@@ -30,7 +30,7 @@ export const todoSlice = createSlice({
       state.isError = false;
     });
     builder.addCase(fetchTodos.fulfilled, (state, action) => {
-      state.todo = action.payload;
+      state.todo = action.payload.reverse();
       state.isLoading = false;
     });
     builder.addCase(fetchTodos.rejected, (state) => {

@@ -27,6 +27,10 @@ const TodoForm: React.FC = () => {
     event.preventDefault();
     await dispatch(addNewTodos(todo));
     await dispatch(fetchTodos());
+    setTodo({
+      title: '',
+      status: false
+    });
   };
   
   return (
@@ -41,6 +45,7 @@ const TodoForm: React.FC = () => {
             id="title"
             className="form-control"
             placeholder="Add title"
+            value={todo.title}
             onChange={todoChanged}
             required
           />
@@ -48,7 +53,7 @@ const TodoForm: React.FC = () => {
         <div className="form-group col-4">
           <button
             type="submit"
-            className={isCreating ? 'btn btn-primary w-100' : 'btn btn-secondary w-100'}
+            className={isCreating ? 'btn btn-secondary w-100' : 'btn btn-primary w-100'}
             disabled={isCreating}
           >
             {isCreating && <ButtonSpinner/>}
