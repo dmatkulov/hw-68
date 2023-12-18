@@ -6,9 +6,10 @@ import {fetchTodos, changeStatus, deleteTodo} from "../../containers/Todos/todoT
 
 interface Props {
   todo: Todo;
+  order: number
 }
 
-const TodoItem: React.FC<Props> = ({todo}) => {
+const TodoItem: React.FC<Props> = ({todo, order}) => {
   const dispatch: AppDispatch = useDispatch();
   const handleStatusChange = async () => {
     await dispatch(changeStatus(todo.id));
@@ -22,7 +23,8 @@ const TodoItem: React.FC<Props> = ({todo}) => {
   
   return (
     <div className="card mb-3 p-3">
-      <h5 className="card-title pb-3 border-bottom mb-3">
+      <h5 className="card-title pb-3 border-bottom mb-3 d-flex gap-2 align-items-center">
+        <p className="rounded-pill p-2 text-center m-0 text-bg-warning text-white" style={{width: '30px', height: '30px', fontSize: '12px'}}>{order + 1}</p>
         {todo.title}
       </h5>
       <div className="d-flex justify-content-between align-items-center">

@@ -19,8 +19,12 @@ const Todos: React.FC = () => {
     <>
       {isLoading && <Spinner/>}
       {isError && (<h5>Something went wrong!</h5>)}
-      {todos.length > 0 ? (todos.map((todo) => (
-        <TodoItem todo={todo} key={todo.id}/>
+      {todos.length > 0 ? (todos.map((todo, index) => (
+        <TodoItem
+          order={index}
+          todo={todo}
+          key={todo.id}
+        />
       ))) : (
         <h5
           className="text-secondary text-center"
