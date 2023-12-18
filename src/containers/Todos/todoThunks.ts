@@ -12,47 +12,45 @@ export const fetchTodos = createAsyncThunk(
     if (fetchedTodos === null) {
       return [];
     } else {
-      const newTodos: Todo[] = Object.keys(fetchedTodos).map((id) => {
-        return {
-          id,
-          title: fetchedTodos[id].title,
-          status: fetchedTodos[id].status
-        };
-      });
-      return [...newTodos];
+      const newTodos: Todo[] = Object.keys(fetchedTodos).map((id) => ({
+        id,
+        title: fetchedTodos[id].title,
+        status: fetchedTodos[id].status
+      }));
+      return newTodos;
     }
   }
 );
 
-export const changeStatus = createAsyncThunk<void, string, {state: RootState}>(
+export const changeStatus = createAsyncThunk<void, string, { state: RootState }>(
   'todo/status',
   async (id, thunkAPI) => {
-      const currentTodos = thunkAPI.getState().todos.todo;
-      
-      const changedTodo = currentTodos.find(todo => todo.id === id);
-      
-      if (!changedTodo) {
-        return;
-      } else {
-        const updatedTodo: TodoApi = {
-          title: changedTodo.title,
-          status: !changedTodo.status
-        };
-        await axiosApi.put('/todos/' + id + '.json', updatedTodo);
-      }
+    const currentTodos = thunkAPI.getState().todos.todoList;
+    
+    const changedTodo = currentTodos.find(todo => todo.id === id);
+    
+    if (!changedTodo) {
+      return;
+    } else {
+      const updatedTodo: TodoApi = {
+        title: changedTodo.title,
+        status: !changedTodo.status
+      };
+      await axiosApi.put('/todos/' + id + '.json', updatedTodo);
+    }
   }
 );
 
-export const deleteTodo = createAsyncThunk<void, string, {state: RootState}>(
+export const deleteTodo = createAsyncThunk<void, string, { state: RootState }>(
   'todo/deleteTodo',
   async (id) => {
     await axiosApi.delete<Todos>('/todos/' + id + '.json');
   }
 );
 
-export const addNewTodos = createAsyncThunk<void, TodoApi, {state: RootState}>(
+export const addNewTodos = createAsyncThunk<void, TodoApi, { state: RootState }>(
   'todo/addTodo',
   async (newTodo) => {
     await axiosApi.post('/todos.json', newTodo);
-}
+  }
 );

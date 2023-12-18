@@ -1,36 +1,24 @@
-import React, {useCallback, useState} from 'react';
-import {TodoApi} from "../../types";
+import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../app/store";
 import {fetchTodos, addNewTodos} from "../../containers/Todos/todoThunks";
 import ButtonSpinner from "../../Spinner/ButtonSpinner";
+import {setTodoForm} from "../../containers/Todos/todoSlice";
 
 const TodoForm: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
+  const todoForm = useSelector((state: RootState) => state.todos.todoForm);
   const isCreating = useSelector((state: RootState) => state.todos.isCreating);
   
-  const [todo, setTodo] = useState<TodoApi>({
-    title: '',
-    status: false,
-  });
-  
   const todoChanged = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = event.target;
-    
-    setTodo((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  }, []);
+    dispatch(setTodoForm(event.target.value));
+  }, [dispatch]);
   
   const onFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await dispatch(addNewTodos(todo));
+    await dispatch(addNewTodos(todoForm));
     await dispatch(fetchTodos());
-    setTodo({
-      title: '',
-      status: false
-    });
+    dispatch(setTodoForm(''));
   };
   
   return (
@@ -44,8 +32,8 @@ const TodoForm: React.FC = () => {
             name="title"
             id="title"
             className="form-control"
-            placeholder="Add title"
-            value={todo.title}
+            placeholder="Todo..."
+            value={todoForm.title}
             onChange={todoChanged}
             required
           />

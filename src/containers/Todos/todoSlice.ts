@@ -1,20 +1,25 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {Todo} from "../../types";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {Todo, TodoApi} from "../../types";
 import {addNewTodos, fetchTodos} from "./todoThunks";
 
 interface TodoState {
-  todo: Todo[];
+  todoList: Todo[];
+  todoForm: TodoApi,
   isLoading: boolean;
   isError: boolean;
   isCreating: boolean
 }
 
 const initialState: TodoState = {
-  todo: [{
+  todoList: [{
     id: '',
     title: '',
     status: false
   }],
+  todoForm: {
+    title: '',
+    status: false,
+  },
   isLoading: false,
   isError: false,
   isCreating: false
@@ -23,14 +28,18 @@ const initialState: TodoState = {
 export const todoSlice = createSlice({
   name: 'todo',
   initialState,
-  reducers: {},
+  reducers: {
+    setTodoForm: (state, action: PayloadAction<string>) => {
+      state.todoForm.title = action.payload;
+    }
+  },
   extraReducers: builder => {
     builder.addCase(fetchTodos.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
     });
     builder.addCase(fetchTodos.fulfilled, (state, action) => {
-      state.todo = action.payload.reverse();
+      state.todoList = action.payload.reverse();
       state.isLoading = false;
     });
     builder.addCase(fetchTodos.rejected, (state) => {
@@ -54,3 +63,6 @@ export const todoSlice = createSlice({
 
 export const todoReducer = todoSlice.reducer;
 
+export const {
+  setTodoForm
+} = todoSlice.actions;

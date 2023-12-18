@@ -6,7 +6,7 @@ import {fetchTodos} from "./todoThunks";
 import Spinner from "../../Spinner/Spinner";
 
 const Todos: React.FC = () => {
-  const todos = useSelector((state: RootState) => state.todos.todo);
+  const todos = useSelector((state: RootState) => state.todos.todoList);
   const  isLoading = useSelector((state: RootState) => state.todos.isLoading);
   const isError = useSelector((state: RootState) => state.todos.isError);
   const dispatch: AppDispatch = useDispatch();
@@ -19,9 +19,8 @@ const Todos: React.FC = () => {
     <>
       {isLoading && <Spinner/>}
       {isError && (<h5>Something went wrong!</h5>)}
-      {todos.length > 0 ? (todos.map((todo, index) => (
+      {todos.length > 0 ? (todos.map((todo) => (
         <TodoItem
-          order={index}
           todo={todo}
           key={todo.id}
         />
