@@ -8,6 +8,7 @@ import Spinner from "../../Spinner/Spinner";
 const Todos: React.FC = () => {
   const todos = useSelector((state: RootState) => state.todos.todo);
   const  isLoading = useSelector((state: RootState) => state.todos.isLoading);
+  const isError = useSelector((state: RootState) => state.todos.isError);
   const dispatch: AppDispatch = useDispatch();
   
   useEffect(() => {
@@ -17,12 +18,16 @@ const Todos: React.FC = () => {
   return (
     <>
       {isLoading && <Spinner/>}
-      {todos.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-        />
-      ))}
+      {isError && (<h5>Something went wrong!</h5>)}
+      {todos.length > 0 ? (todos.map((todo) => (
+        <TodoItem todo={todo} key={todo.id}/>
+      ))) : (
+        <h5
+          className="text-secondary text-center"
+        >
+          Task list is empty!
+        </h5>
+      )}
     </>
   );
 };
