@@ -25,7 +25,7 @@ const Todos: React.FC = () => {
         <h5
           className="text-secondary text-center"
         >
-          Task list is empty!
+          Your task list is empty!
         </h5>
       )}
     </>
