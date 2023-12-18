@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import axiosApi from "../../axiosApi";
-import {TodoApi, Todos} from "../../types";
+import {Todo, TodoApi, Todos} from "../../types";
 import {RootState} from "../../app/store";
 
 export const fetchTodos = createAsyncThunk(
@@ -12,7 +12,7 @@ export const fetchTodos = createAsyncThunk(
     if (fetchedTodos === null) {
       return [];
     } else {
-      const newTodos = Object.keys(fetchedTodos).map((id) => {
+      const newTodos: Todo[] = Object.keys(fetchedTodos).map((id) => {
         return {
           id,
           title: fetchedTodos[id].title,
@@ -35,10 +35,9 @@ export const changeStatus = createAsyncThunk<void, string, {state: RootState}>(
         return;
       } else {
         const updatedTodo: TodoApi = {
-          ...changedTodo,
+          title: changedTodo.title,
           status: !changedTodo.status
         };
-        
         await axiosApi.put('/todos/' + id + '.json', updatedTodo);
       }
   }

@@ -37,7 +37,6 @@ export const todoSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
     });
-    
     builder.addCase(addNewTodos.pending, (state) => {
       state.isCreating = true;
       state.isError = false;
