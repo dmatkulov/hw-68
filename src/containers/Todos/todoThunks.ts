@@ -24,20 +24,12 @@ export const fetchTodos = createAsyncThunk(
 
 export const changeStatus = createAsyncThunk<void, Todo, { state: RootState }>(
   'todo/status',
-  async (todo, thunkAPI) => {
-    const currentTodos = thunkAPI.getState().todos.todoList;
-    
-    const changedTodo = currentTodos.find(item => item.id === todo.id);
-    
-    if (!changedTodo) {
-      return;
-    } else {
+  async (todo) => {
       const updatedTodo: TodoApi = {
-        title: changedTodo.title,
-        status: !changedTodo.status
+        title: todo.title,
+        status: !todo.status
       };
       await axiosApi.put('/todos/' + todo.id + '.json', updatedTodo);
-    }
   }
 );
 
