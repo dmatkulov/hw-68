@@ -1,13 +1,11 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Todo, TodoApi} from "../../types";
-import {addNewTodos, fetchTodos} from "./todoThunks";
+import {createSlice} from "@reduxjs/toolkit";
+import {Todo} from "../../types";
+import {fetchTodos} from "./todoThunks";
 
 interface TodoState {
   todoList: Todo[];
-  todoForm: TodoApi,
   isLoading: boolean;
   isError: boolean;
-  isCreating: boolean
 }
 
 const initialState: TodoState = {
@@ -16,23 +14,14 @@ const initialState: TodoState = {
     title: '',
     status: false
   }],
-  todoForm: {
-    title: '',
-    status: false,
-  },
   isLoading: false,
   isError: false,
-  isCreating: false
 };
 
 export const todoSlice = createSlice({
   name: 'todo',
   initialState,
-  reducers: {
-    setTodoForm: (state, action: PayloadAction<string>) => {
-      state.todoForm.title = action.payload;
-    }
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchTodos.pending, (state) => {
       state.isLoading = true;
@@ -46,23 +35,7 @@ export const todoSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
     });
-    builder.addCase(addNewTodos.pending, (state) => {
-      state.isCreating = true;
-      state.isError = false;
-    });
-    builder.addCase(addNewTodos.fulfilled, (state) => {
-      state.isCreating = false;
-      state.isError = false;
-    });
-    builder.addCase(addNewTodos.rejected, (state) => {
-      state.isCreating = false;
-      state.isError = true;
-    });
   }
 });
 
 export const todoReducer = todoSlice.reducer;
-
-export const {
-  setTodoForm
-} = todoSlice.actions;

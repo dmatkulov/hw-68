@@ -1,14 +1,15 @@
 import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../app/store";
-import {fetchTodos, addNewTodos} from "../../containers/Todos/todoThunks";
+import {fetchTodos} from "../../containers/Todos/todoThunks";
 import ButtonSpinner from "../../Spinner/ButtonSpinner";
-import {setTodoForm} from "../../containers/Todos/todoSlice";
+import {setTodoForm} from "./formSlice";
+import {addNewTodos} from "./formThunks";
 
 const TodoForm: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const todoForm = useSelector((state: RootState) => state.todos.todoForm);
-  const isCreating = useSelector((state: RootState) => state.todos.isCreating);
+  const todoForm = useSelector((state: RootState) => state.form.todoForm);
+  const isCreating = useSelector((state: RootState) => state.form.isCreating);
   
   const todoChanged = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setTodoForm(event.target.value));

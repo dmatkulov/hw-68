@@ -22,12 +22,12 @@ export const fetchTodos = createAsyncThunk(
   }
 );
 
-export const changeStatus = createAsyncThunk<void, string, { state: RootState }>(
+export const changeStatus = createAsyncThunk<void, Todo, { state: RootState }>(
   'todo/status',
-  async (id, thunkAPI) => {
+  async (todo, thunkAPI) => {
     const currentTodos = thunkAPI.getState().todos.todoList;
     
-    const changedTodo = currentTodos.find(todo => todo.id === id);
+    const changedTodo = currentTodos.find(item => item.id === todo.id);
     
     if (!changedTodo) {
       return;
@@ -36,21 +36,14 @@ export const changeStatus = createAsyncThunk<void, string, { state: RootState }>
         title: changedTodo.title,
         status: !changedTodo.status
       };
-      await axiosApi.put('/todos/' + id + '.json', updatedTodo);
+      await axiosApi.put('/todos/' + todo.id + '.json', updatedTodo);
     }
   }
 );
 
-export const deleteTodo = createAsyncThunk<void, string, { state: RootState }>(
+export const deleteTodo = createAsyncThunk<void, Todo, { state: RootState }>(
   'todo/deleteTodo',
-  async (id) => {
-    await axiosApi.delete<Todos>('/todos/' + id + '.json');
-  }
-);
-
-export const addNewTodos = createAsyncThunk<void, TodoApi, { state: RootState }>(
-  'todo/addTodo',
-  async (newTodo) => {
-    await axiosApi.post('/todos.json', newTodo);
+  async (todo) => {
+    await axiosApi.delete<Todos>('/todos/' + todo.id + '.json');
   }
 );

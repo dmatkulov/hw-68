@@ -11,12 +11,12 @@ interface Props {
 const TodoItem: React.FC<Props> = ({todo}) => {
   const dispatch: AppDispatch = useDispatch();
   const handleStatusChange = async () => {
-    await dispatch(changeStatus(todo.id));
+    await dispatch(changeStatus(todo));
     await dispatch(fetchTodos());
   };
   
   const handleDelete = async () => {
-    await dispatch(deleteTodo(todo.id));
+    await dispatch(deleteTodo(todo));
     await dispatch(fetchTodos());
   };
   
